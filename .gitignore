@@ -1,3 +1,8 @@
+local_notes.md
+*.jpg
+*.png
+step.py
+
 # Editors
 .vscode/
 .idea/
