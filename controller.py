@@ -1,7 +1,7 @@
 # from typing import List
 import cv2
 import pytesseract
-import requests
+# import requests
 from step import stepKey
 from subprocess import run
 import json
@@ -32,6 +32,7 @@ class miningDb:
             elif not os.path.exists('minerals.json'):
                 print('creating new minerals.json')
                 self.cleanMineralsFile(output)
+
 
     def cleanMineralsFile(self, output):
         with open('minerals.json', 'w') as f:
