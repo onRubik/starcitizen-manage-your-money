@@ -43,7 +43,10 @@ class miningDb:
         for x in read_file:
             img = cv2.imread(x)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            data = pytesseract.image_to_string(img, lang='eng', config='--psm 11')
+            # for windows:
+            # data = pytesseract.image_to_string(img, lang='eng', config='--psm 11')
+            # for linux:
+            data = pytesseract.image_to_string(img,config='--psm 11')
             read_data = read_data + data
 
         split_list = read_data.splitlines()
@@ -53,6 +56,7 @@ class miningDb:
     def cleanInput(self):
         numbers = ['0','1','2','3','4','5','6','7','8','9']
         raw_list = self.rewriteImage()
+        print(raw_list)
         list_str = []
         list_int = []
         clean_list = []
@@ -95,6 +99,7 @@ class miningDb:
         data = self.cleanInput()
         sell_amount = 0
         share_per_player = 0
+        print(data)
 
         with open('db.json') as json_db:
             json_data = json.load(json_db)
@@ -110,6 +115,8 @@ class miningDb:
                     sell_amount = sell_amount + product
 
             json_data['orders'][unique_id] = {"players": self.players, "order": data, "sell_amount": sell_amount}
+            print(json_data)
+            print('finished order')
 
 
 
