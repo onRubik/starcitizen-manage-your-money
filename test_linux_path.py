@@ -1,8 +1,19 @@
 import os
+import platform
+
 
 file_type = ['png', 'jpg', 'JPG', 'PNG']
 
 def img_folder(file_type):
+        # to review os type:
+        print(os.name)
+        print(platform.system())
+        
+        # The output of platform.system() is as follows:
+        # Linux: Linux
+        # Mac: Darwin
+        # Windows: Windows
+        
         file_path = []
         script_dir = os.path.dirname(__file__)
         script_dir = os.path.dirname(os.path.abspath(__file__))
