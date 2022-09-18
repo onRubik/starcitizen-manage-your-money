@@ -13,6 +13,7 @@ import json
 import os
 from typing import List
 import uuid
+import platform
 
 
 class miningDb:
@@ -23,30 +24,38 @@ class miningDb:
 
     # notice: os.path.dirname(__file__) is intended to be used for a windows OS
     def img_folder(self):
+        os_type = platform.system()
         file_path = []
-        script_dir = os.path.dirname(__file__)
-        input_path = script_dir + '\\img\\'
+        if os_type == 'Windows':
+            script_dir = os.path.dirname(__file__)
+            input_path = script_dir + '\\img\\'
+        elif os_type == 'LInux':
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            input_path = script_dir + '/img/'
         for path, dirs, files in os.walk(input_path):
             for filename in files:
                 if filename.split('.')[-1] in self.file_type:
                     file_path.append(os.path.join(path, filename))
 
-        return file_path
+        return file_path, os_type
 
     
     def rewriteImage(self):
         read_data = ''
-        read_file = self.img_folder()
+        read_file = self.img_folder()[0]
+        os_type = self.img_folder()[1]
+        # for windows:
         # substitute <user_name> with the correct user folder
-        pytesseract.pytesseract.tesseract_cmd = r'C:\Users\excel\AppData\Local\Tesseract-OCR\tesseract.exe'
+        if os_type == 'Windows':
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\excel\AppData\Local\Tesseract-OCR\tesseract.exe'
 
         for x in read_file:
             img = cv2.imread(x)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             # for windows:
-            # data = pytesseract.image_to_string(img, lang='eng', config='--psm 11')
+            data = pytesseract.image_to_string(img, lang='eng', config='--psm 11')
             # for linux:
-            data = pytesseract.image_to_string(img,config='--psm 11')
+            # data = pytesseract.image_to_string(img,config='--psm 11')
             read_data = read_data + data
 
         split_list = read_data.splitlines()
@@ -56,7 +65,7 @@ class miningDb:
     def cleanInput(self):
         numbers = ['0','1','2','3','4','5','6','7','8','9']
         raw_list = self.rewriteImage()
-        print(raw_list)
+        # print(raw_list)
         list_str = []
         list_int = []
         clean_list = []
@@ -99,7 +108,7 @@ class miningDb:
         data = self.cleanInput()
         sell_amount = 0
         share_per_player = 0
-        print(data)
+        # print(data)
 
         with open('db.json') as json_db:
             json_data = json.load(json_db)
@@ -108,10 +117,24 @@ class miningDb:
                 minerals_data = json.load(json_minerals)
                 # print(minerals_data)
                 for x in data:
-                    print(x[0])
-                    print(minerals_data.get(x[0]))
-                    price = (minerals_data.get(x[0])) * 1.0
-                    product = x[1] * price
+                    # print(x[0])
+                    # print(minerals_data.get(x[0]))
+                    # print(type(minerals_data.get(x[0])))
+                    # print(x[1])
+                    # print(type(x[1]))
+                    # price = (minerals_data.get(x[0])) * 1.0
+                    if minerals_data.get(x[0]) != None:
+                        price = minerals_data.get(x[0])
+                        if x[1] != 'null':
+                            product = x[1] * price
+                        elif x[1] == 'null':
+                            product = 0 * price
+                    elif minerals_data.get(x[0]) == None:
+                        price = 0
+                        if x[1] != 'null':
+                            product = x[1] * price
+                        elif x[1] == 'null':
+                            product = 0 * price
                     sell_amount = sell_amount + product
 
             json_data['orders'][unique_id] = {"players": self.players, "order": data, "sell_amount": sell_amount}
