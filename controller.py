@@ -48,7 +48,7 @@ class miningDb:
         # for windows:
         # substitute <user_name> with the correct user folder
         if os_type == 'Windows':
-            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\excel\AppData\Local\Tesseract-OCR\tesseract.exe'
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\<user_name>\AppData\Local\Tesseract-OCR\tesseract.exe'
 
         for x in read_file:
             img = cv2.imread(x)
@@ -103,24 +103,22 @@ class miningDb:
     def addOrder(self):
         data = self.cleanInput()
         sell_amount = 0
-        share_per_player = 0
 
-        # with open('db.json') as json_db:
         with open('db.json', 'r+') as json_db:
             json_data = json.load(json_db)
             unique_id = uuid.uuid4()
             with open('minerals.json') as json_minerals:
                 minerals_data = json.load(json_minerals)
                 for x in data:
-                    if minerals_data.get(x[0]) != None:
-                        refined_material = x[0].replace(' (RAW)', '')
-                        refined_material = x[0].replace(' (ORE)', '')
+                    refined_material = x[0].replace(' (RAW)', '')
+                    refined_material = refined_material.replace(' (ORE)', '')
+                    if minerals_data.get(refined_material) != None:
                         price = minerals_data.get(refined_material)
                         if x[1] != 'null':
                             product = x[1] * price
                         elif x[1] == 'null':
                             product = 0 * price
-                    elif minerals_data.get(x[0]) == None:
+                    elif minerals_data.get(refined_material) == None:
                         price = 0
                         if x[1] != 'null':
                             product = x[1] * price
@@ -130,11 +128,11 @@ class miningDb:
 
             ct = datetime.datetime.now()
             unique_id = str(unique_id)
-            append_data = {unique_id: {"date": str(ct), "players": self.players, "order": data, "sell_amount": sell_amount}}
+            append_data = {unique_id: {"date": str(ct), "players": self.players, "order": data, "sell_amount": sell_amount, "share_per_player": sell_amount/(len(self.players))}}
             json_data["orders"].update(append_data)
             json_db.seek(0)
             json.dump(json_data, json_db, indent = 4)
-            print('finished order')
+            print('finished order update')
 
 
     def uexcorpReviewMinerals(self):
