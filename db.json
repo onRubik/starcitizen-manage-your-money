@@ -1,5 +1,30 @@
 {
     "orders": {
-
+        "9d3c6b23-9bc8-4204-a66e-7d5a64d8faeb": {
+            "date": "2022-09-18 17:08:40.001092",
+            "players": [
+                "viper",
+                "nj"
+            ],
+            "order": [
+                [
+                    "AGRICIUM (ORE)",
+                    1002
+                ],
+                [
+                    "CORUNDUM (RAW)",
+                    149
+                ],
+                [
+                    "BERYL (RAW)",
+                    196
+                ],
+                [
+                    "LARANITE (RAW)",
+                    161
+                ]
+            ],
+            "sell_amount": 28189.31
+        }
     }
 }

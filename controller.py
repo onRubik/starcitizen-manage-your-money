@@ -14,6 +14,7 @@ import os
 from typing import List
 import uuid
 import platform
+import datetime
 
 
 class miningDb:
@@ -104,14 +105,17 @@ class miningDb:
         sell_amount = 0
         share_per_player = 0
 
-        with open('db.json') as json_db:
+        # with open('db.json') as json_db:
+        with open('db.json', 'r+') as json_db:
             json_data = json.load(json_db)
             unique_id = uuid.uuid4()
             with open('minerals.json') as json_minerals:
                 minerals_data = json.load(json_minerals)
                 for x in data:
                     if minerals_data.get(x[0]) != None:
-                        price = minerals_data.get(x[0])
+                        refined_material = x[0].replace(' (RAW)', '')
+                        refined_material = x[0].replace(' (ORE)', '')
+                        price = minerals_data.get(refined_material)
                         if x[1] != 'null':
                             product = x[1] * price
                         elif x[1] == 'null':
@@ -124,10 +128,13 @@ class miningDb:
                             product = 0 * price
                     sell_amount = sell_amount + product
 
-            json_data['orders'][unique_id] = {"players": self.players, "order": data, "sell_amount": sell_amount}
-            print(json_data)
+            ct = datetime.datetime.now()
+            unique_id = str(unique_id)
+            append_data = {unique_id: {"date": str(ct), "players": self.players, "order": data, "sell_amount": sell_amount}}
+            json_data["orders"].update(append_data)
+            json_db.seek(0)
+            json.dump(json_data, json_db, indent = 4)
             print('finished order')
-
 
 
     def uexcorpReviewMinerals(self):
