@@ -18,7 +18,8 @@ Notice:
 * tesseract-ocr needs to be installed in addition to requirement.txt
 * for a Windows system is recommended to use a windows installer:
 https://github.com/UB-Mannheim/tesseract/wiki
-** for a Linux system it can be installed using apt:
+
+* for a Linux system it can be installed using apt:
 > sudo apt install tesseract-ocr
 * the current script version is is intended to work foremost in Windows 10
 
