@@ -29,7 +29,7 @@ https://github.com/UB-Mannheim/tesseract/wiki
 * db.json will be updated with a new order each time model.py runs
 
 # Further development
-* when using the function pytesseract.image_to_string(), for the current version, ** _ most likely it will ignore single digit inputs__**
-* **__if this happens the quantities for each mineral will be shifted and needs to be updated manually _ **
+* when using the function pytesseract.image_to_string(), for the current version, ** _ most likely it will ignore single digit inputs_ **
+* ** _if this happens the quantities for each mineral will be shifted and needs to be updated manually_ **
 * to solve the previous issue, tuning for the images or using another solution rather than tesseract-ocr may be introduced
 * input to read players names from an image also will be introduced
