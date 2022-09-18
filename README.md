@@ -24,6 +24,7 @@ https://github.com/UB-Mannheim/tesseract/wiki
 * the current script version is intended to work foremost in Windows 10
 
 # Script usage
+* if using a Windows system, in controller.py file line 51 update your username folder path
 * save all images for an order in the img/ folder
 * run model.py
 * db.json will be updated with a new order each time model.py runs
