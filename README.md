@@ -21,15 +21,15 @@ https://github.com/UB-Mannheim/tesseract/wiki
 
 * for a Linux system it can be installed using apt:
 > sudo apt install tesseract-ocr
-* the current script version is is intended to work foremost in Windows 10
+* the current script version is intended to work foremost in Windows 10
 
 # Script usage
-* save all images to add to an order in the img/ folder
+* save all images for an order in the img/ folder
 * run model.py
 * db.json will be updated with a new order each time model.py runs
 
 # Further development
-* when using the function pytesseract.image_to_string() for the current version, most likely it will ignore single digit inputs
-* if this happens the quantities for each mineral will be shifted and needs to be updated manually
+* when using the function pytesseract.image_to_string(), for the current version, <mark>most likely it will ignore single digit inputs</mark>
+* <mark>if this happens the quantities for each mineral will be shifted and needs to be updated manually</mark>
 * to solve the previous issue, tuning for the images or using another solution rather than tesseract-ocr may be introduced
 * input to read players names from an image also will be introduced
