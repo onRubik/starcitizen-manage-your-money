@@ -29,7 +29,7 @@ class miningDb:
         if os_type == 'Windows':
             script_dir = os.path.dirname(__file__)
             input_path = script_dir + '\\img\\'
-        elif os_type == 'LInux':
+        elif os_type == 'Linux':
             script_dir = os.path.dirname(os.path.abspath(__file__))
             input_path = script_dir + '/img/'
         for path, dirs, files in os.walk(input_path):
@@ -52,10 +52,7 @@ class miningDb:
         for x in read_file:
             img = cv2.imread(x)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            # for windows:
             data = pytesseract.image_to_string(img, lang='eng', config='--psm 11')
-            # for linux:
-            # data = pytesseract.image_to_string(img,config='--psm 11')
             read_data = read_data + data
 
         split_list = read_data.splitlines()
@@ -65,12 +62,10 @@ class miningDb:
     def cleanInput(self):
         numbers = ['0','1','2','3','4','5','6','7','8','9']
         raw_list = self.rewriteImage()
-        # print(raw_list)
         list_str = []
         list_int = []
         clean_list = []
         for i, x in enumerate(raw_list):
-            # print(x)
             if not x:
                 continue
             elif x[0] not in numbers:
@@ -108,21 +103,13 @@ class miningDb:
         data = self.cleanInput()
         sell_amount = 0
         share_per_player = 0
-        # print(data)
 
         with open('db.json') as json_db:
             json_data = json.load(json_db)
             unique_id = uuid.uuid4()
             with open('minerals.json') as json_minerals:
                 minerals_data = json.load(json_minerals)
-                # print(minerals_data)
                 for x in data:
-                    # print(x[0])
-                    # print(minerals_data.get(x[0]))
-                    # print(type(minerals_data.get(x[0])))
-                    # print(x[1])
-                    # print(type(x[1]))
-                    # price = (minerals_data.get(x[0])) * 1.0
                     if minerals_data.get(x[0]) != None:
                         price = minerals_data.get(x[0])
                         if x[1] != 'null':
@@ -182,16 +169,13 @@ class miningDb:
 
         keep_keys = ['data', 'name', 'trade_price_sell']
         with open('minerals.json') as f_del:
-            d = json.load(f_del)
+            d = json.loads(f_del.read())
             new_data = {k: v for k, v in d.items() if k == 'data'}
             new_dict = {}
             for x in new_data['data']:
                 x = {k: v for k, v in x.items() if k in keep_keys}
                 get_key = x.get('name')
-                # upper_key = ''
                 upper_key = get_key.upper()
-                print(upper_key)
-                # new_dict[x.get('name')] = x.get('trade_price_sell')
                 new_dict[upper_key] = x.get('trade_price_sell')
             
         with open('minerals.json', 'w') as out_f:

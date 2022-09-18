@@ -7,9 +7,7 @@ class mainModel:
         players = ['viper', 'nj']
 
         newMiningDb = miningDb(file_type, players)
-        # newMiningDb.uexcorpReviewMinerals()
-        # newMiningDb.rewriteImage()
-        # newMiningDb.cleanInput()
+        newMiningDb.uexcorpReviewMinerals()
         newMiningDb.addOrder()
 
 
